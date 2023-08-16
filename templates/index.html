@@ -50,7 +50,7 @@
       <div class="modal-body">
         <!-- Update form goes here -->
         <form action="{{url_for('update')}}" method="POST">
-          <input type="hidden" name="user_id" value="{{ record.user_id }}">
+          <input type="text" name="user_id" value="{{ record.user_id }}" hidden>
           <div class="form-group">
             <label for="user_name">Username</label>
             <input type="text" class="form-control" id="user_name" name="user_name" value="{{ record.user_name }}">

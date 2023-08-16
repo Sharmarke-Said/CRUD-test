@@ -1,5 +1,5 @@
 import mysql.connector
-import json
+
 
 class Database:
     def __init__(self, host, user, passwrd, my_database):
@@ -26,7 +26,7 @@ class Database:
         return self.create_connection().cursor()
 
 
-mydb = Database('localhost', 'root', 'Arabka', 'CRUD')
+mydb = Database('localhost', 'root', 'Arabka', 'TEST')
 myDatabase = mydb.create_connection()
 
 mycursor = myDatabase.cursor()
@@ -95,14 +95,18 @@ class Registration:
                     UPDATE users SET user_name = %s, email = %s, user_pass = %s WHERE user_id = %s
                     """
             # Execute the query with the values
-            mycursor.execute(query, (user_id, user_name, email, user_pass))
+            mycursor.execute(query, (user_name, email, user_pass, user_id))
             # Commit the changes to the database
             myDatabase.commit()
-            # Print a success message
+            
+            # Print debug information
+            print("Query executed successfully.")
             print(mycursor.rowcount, "record updated.")
 
         except Exception as e:
-            print(f"Error in update database: {e}")
+            print(f"Error in update database method: {e}")
+
+
 
     # Function to delete a record from the database
     def delete_record(name, user_id):

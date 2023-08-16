@@ -14,6 +14,7 @@ def home():
     records = reg.display_records()
     # records = json.loads(records_json)
     # records_list = [list(record) for record in records]
+    print(records)
     return render_template("index.html", records=records)
 
 
@@ -35,16 +36,19 @@ def insert():
 
 @app.route("/update", methods=["POST"])
 def update():
-    if request.method == "POST":
-        user_id = request.form.get('user_id')
-        user_name = request.form.get('user_name')
-        email = request.form.get('email')
-        user_pass = request.form.get('user_pass')
-        reg.update_record(user_id, user_name, email, user_pass)
-        updated_records = reg.display_records()
-
-        flash("Record updated successfully")
-        return render_template("index.html", records=updated_records)
+    try:
+        if request.method == "POST":
+            user_id = request.form.get('user_id')
+            user_name = request.form.get('user_name')
+            email = request.form.get('email')
+            user_pass = request.form.get('user_pass')
+            reg.update_record(user_id, user_name, email, user_pass)
+            flash("Record updated successfully")
+        else:
+            flash("Failed to update record")
+        return redirect(url_for("home"))
+    except Exception as e:
+        print(f"Error in update route function: {e}")
 
 
 @app.route("/delete", methods=["POST", "GET"])
