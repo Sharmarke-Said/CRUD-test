@@ -53,7 +53,14 @@ def update():
 
 @app.route("/delete", methods=["POST", "GET"])
 def delete():
-    pass
+    if request.method == "POST":
+        try:
+            user_id = request.form.get("user_id")
+            reg.delete_record(user_id)
+            flash("record deleted successfully")
+            return redirect(url_for("home"))
+        except Exception as e:
+            print(f"Error in delete route function: {e}")
 
 if __name__ == "__main__":
     app.run(debug=True)

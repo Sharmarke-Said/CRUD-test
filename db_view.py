@@ -16,7 +16,8 @@ class Database:
                 passwd=self.passwrd,  # so on
                 database=self.database  # change it with  your own database
             )
-            print("Si guul leh baabu kugu xirnay salka xogta.")  # message for successfull connection
+            # message for successfull connection
+            print("Si guul leh baabu kugu xirnay salka xogta.")
             return myd_database
         except Exception as e:
             print(e)
@@ -72,18 +73,15 @@ class Registration:
                     'user_pass': row[3]
                 }
                 records.append(record)
-            
+
             return records
 
         except Exception as e:
             print(f"Error in displaying data from db: {e}")
             return None
 
-
-
-
-
     # Function to update an existing record in the database
+
     def update_record(self, user_id, user_name, email, user_pass):
         try:
             mydb = Database('localhost', 'root', 'Arabka', 'TEST')
@@ -98,7 +96,7 @@ class Registration:
             mycursor.execute(query, (user_name, email, user_pass, user_id))
             # Commit the changes to the database
             myDatabase.commit()
-            
+
             # Print debug information
             print("Query executed successfully.")
             print(mycursor.rowcount, "record updated.")
@@ -107,14 +105,23 @@ class Registration:
             print(f"Error in update database method: {e}")
 
 
-
     # Function to delete a record from the database
-    def delete_record(name, user_id):
-        # Prepare the SQL query
-        query = "DELETE FROM users WHERE user_id = %s"
-        # Execute the query with the value
-        mycursor.execute(query, (user_id))
-        # Commit the changes to the database
-        myDatabase.commit()
-        # Print a success message
-        print(mycursor.rowcount, "record deleted.")
+    def delete_record(self, user_id):
+
+        try:
+            mydb = Database('localhost', 'root', 'Arabka', 'TEST')
+            myDatabase = mydb.create_connection()
+            mycursor = myDatabase.cursor()
+
+            # Prepare the SQL query
+            query = "DELETE FROM users WHERE user_id = %s"
+            # Execute the query with the value
+            mycursor.execute(query, (user_id,))
+            # Commit the changes to the database
+            myDatabase.commit()
+            # Print debug information
+            print("Query executed successfully.")
+            # Print a success message
+            print(mycursor.rowcount, "record deleted.")
+        except Exception as e:
+            print(f"Error in delete database method: {e}")
