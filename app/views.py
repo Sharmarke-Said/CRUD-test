@@ -1,9 +1,11 @@
+from app import app
+
 from flask import Flask, flash, url_for, redirect, render_template, request, session
 import json
-from db_view import Registration
+from app.db_view import Registration
 
 
-app = Flask(__name__)
+
 
 app.secret_key = "143"
 reg = Registration()
