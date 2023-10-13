@@ -2,13 +2,13 @@ from app import app
 
 from flask import Flask, flash, url_for, redirect, render_template, request, session
 import json
-from app.db_view import Registration
+from app.db_view import students
 
 
 
 
 app.secret_key = "143"
-reg = Registration()
+reg = students()
 
 
 @app.route("/")
@@ -25,26 +25,31 @@ def home():
 # # Route for the insert page
 @app.route("/insert", methods=['GET', 'POST'])
 def insert():
-    if request.method == "POST":
-        user_name = request.form.get("user_name")
-        email = request.form.get("email")
-        user_pass = request.form.get("user_pass")
-        # Insert a new record into the database
-        reg.insert_record(user_name, email, user_pass)
-        flash("record inserted")
-    # Render the insert.html template
-    return render_template("insert.html")
+    try:
+        if request.method == "POST":
+            name = request.form.get("name")
+            email = request.form.get("email")
+            address = request.form.get("address")
+            std_class = request.form.get("std_class")
+            # Insert a new record into the database
+            reg.insert_record(name, email, address, std_class)
+            flash("record inserted")
+        
+        return redirect(url_for("home"))
+    except Exception as e:
+        print(f"Error in Insert route function: {e}")
 
 
 @app.route("/update", methods=["POST"])
 def update():
     try:
         if request.method == "POST":
-            user_id = request.form.get('user_id')
-            user_name = request.form.get('user_name')
+            id = request.form.get('id')
+            name = request.form.get('name')
             email = request.form.get('email')
-            user_pass = request.form.get('user_pass')
-            reg.update_record(user_id, user_name, email, user_pass)
+            address = request.form.get('address')
+            std_class = request.form.get('std_class')
+            reg.update_record(id, name, email, address, std_class)
             flash("Record updated successfully")
         else:
             flash("Failed to update record")
@@ -57,12 +62,12 @@ def update():
 def delete():
     if request.method == "POST":
         try:
-            user_id = request.form.get("user_id")
-            reg.delete_record(user_id)
+            id = request.form.get("id")
+            reg.delete_record(id)
             flash("record deleted successfully")
             return redirect(url_for("home"))
         except Exception as e:
             print(f"Error in delete route function: {e}")
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     app.run(debug=True)
